@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "400494303340",
+    "project_id": "paldoapp",
+    "storage_bucket": "paldoapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400494303340:android:de93e246411ab04c0a6049",
+        "android_client_info": {
+          "package_name": "com.example.paldoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8FDveaYebdT3VVQfMKdB1gpeV9yTiz8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
