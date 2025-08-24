@@ -4,41 +4,89 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
-    android:layout_margin="32dp"
     android:background="@color/blueDark">
-    <TextView
-        android:layout_marginTop="50dp"
+
+    <!-- Toolbar with title and menu icon -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Picking Data"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:textColor="@color/white" />
+        android:padding="16dp"
+        android:layout_marginTop="45dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/paldoapp_logo"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/print_summary"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/icon_menu"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/option_btn"
+            android:layout_marginEnd="30dp"/>
+    </RelativeLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true"
-        android:layout_marginTop="45dp">
-
+        android:layout_marginTop="16dp">
 
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:scrollbars="vertical">
-
+            android:scrollbars="vertical"
+            android:layout_margin="5dp">
 
             <TableLayout
                 android:id="@+id/printTableLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:contentDescription="@string/enter_how_much_cookies_you_want"
-                />
+                android:contentDescription="@string/enter_how_much_cookies_you_want"/>
 
         </ScrollView>
     </HorizontalScrollView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btnSaveChanges"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/save_changes"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnExportExcel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:text="Export Excel"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
 
 </LinearLayout>

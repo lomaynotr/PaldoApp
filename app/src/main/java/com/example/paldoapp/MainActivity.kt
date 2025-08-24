@@ -1,5 +1,6 @@
 package com.example.paldoapp
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
@@ -11,14 +12,15 @@ import android.text.TextWatcher
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -95,16 +97,20 @@ class MainActivity : AppCompatActivity() {
 
         // Update counter text with user info
         updateUserInfo()
+
+        binding.optionBtn.setOnClickListener { view ->
+            showPopupMenu(view)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+        menuInflater.inflate(R.menu.menu_popup, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_logout -> {
+            R.id.menu_logout -> {
                 showLogoutDialog()
                 true
             }
@@ -123,21 +129,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             user?.email ?: "Unknown User"
         }
-        // binding.counterTextView.text = "Welcome, $userInfo"
+        // Update UI with user info if needed
     }
 
-    private fun showLogoutDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { _, _ ->
-                auth.signOut()
-                startActivity(Intent(this, AuthActivity::class.java))
-                finish()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
 
     private fun createDatePicker() {
         selectedDateTextView = TextView(this).apply {
@@ -157,7 +151,7 @@ class MainActivity : AppCompatActivity() {
             text = "Add Data"
             textSize = 16f
             setPadding(32, 16, 32, 16)
-            setOnClickListener { addDataToFirestore() }
+            setOnClickListener { checkDateAndAddData() } // Use the new method that checks date first
         }
 
         val showDataButton = Button(this).apply {
@@ -388,13 +382,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     // ================================
-    // FIRESTORE OPERATIONS
+    // FIRESTORE OPERATIONS - UPDATED WITH DATE CHECK
     // ================================
 
-    private fun addDataToFirestore() {
+    // New function to check if date exists before adding data
+    private fun checkDateAndAddData() {
         val currentUser = auth.currentUser
         if (currentUser == null) {
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please log in first", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -411,10 +406,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // Disable button to prevent multiple clicks
-        addDataButton.isEnabled = false
-        addDataButton.text = "Saving..."
-
         // Check if data for this date already exists
         FirebaseFirestore.getInstance()
             .collection("counter_data")
@@ -426,32 +417,38 @@ class MainActivity : AppCompatActivity() {
                     // No existing data for this date, create new entry
                     createNewEntry(currentUser.uid, totalKilo, totalAmount)
                 } else {
-                    // Existing data found, update it by adding to existing values
-                    val existingDoc = documents.documents[0]
-                    val existingKilo = existingDoc.getDouble("totalKilo") ?: 0.0
-                    val existingAmount = existingDoc.getDouble("totalAmount") ?: 0.0
+                    // Existing data found, show confirmation dialog
+                    AlertDialog.Builder(this)
+                        .setTitle("Date Already Has Data")
+                        .setMessage("Data already exists for $selectedDate. Are you sure you want to add more data to this date?")
+                        .setPositiveButton("Yes, Add More") { _, _ ->
+                            // User confirmed, update existing entry
+                            val existingDoc = documents.documents[0]
+                            val existingKilo = existingDoc.getDouble("totalKilo") ?: 0.0
+                            val existingAmount = existingDoc.getDouble("totalAmount") ?: 0.0
 
-                    // Get existing category values
-                    val existingC1 = existingDoc.getDouble("c1") ?: 0.0
-                    val existingC2 = existingDoc.getDouble("c2") ?: 0.0
-                    val existingC3 = existingDoc.getDouble("c3") ?: 0.0
-                    val existingC4 = existingDoc.getDouble("c4") ?: 0.0
+                            // Get existing category values
+                            val existingC1 = existingDoc.getDouble("c1") ?: 0.0
+                            val existingC2 = existingDoc.getDouble("c2") ?: 0.0
+                            val existingC3 = existingDoc.getDouble("c3") ?: 0.0
+                            val existingC4 = existingDoc.getDouble("c4") ?: 0.0
 
-                    val newTotalKilo = existingKilo + totalKilo
-                    val newTotalAmount = existingAmount + totalAmount
+                            val newTotalKilo = existingKilo + totalKilo
+                            val newTotalAmount = existingAmount + totalAmount
 
-                    // Add current category values to existing ones
-                    val newC1 = existingC1 + (data[0][1].toDoubleOrNull() ?: 0.0)
-                    val newC2 = existingC2 + (data[1][1].toDoubleOrNull() ?: 0.0)
-                    val newC3 = existingC3 + (data[2][1].toDoubleOrNull() ?: 0.0)
-                    val newC4 = existingC4 + (data[3][1].toDoubleOrNull() ?: 0.0)
+                            // Add current category values to existing ones
+                            val newC1 = existingC1 + (data[0][1].toDoubleOrNull() ?: 0.0)
+                            val newC2 = existingC2 + (data[1][1].toDoubleOrNull() ?: 0.0)
+                            val newC3 = existingC3 + (data[2][1].toDoubleOrNull() ?: 0.0)
+                            val newC4 = existingC4 + (data[3][1].toDoubleOrNull() ?: 0.0)
 
-                    updateExistingEntry(existingDoc.id, newTotalKilo, newTotalAmount, newC1, newC2, newC3, newC4)
+                            updateExistingEntry(existingDoc.id, newTotalKilo, newTotalAmount, newC1, newC2, newC3, newC4)
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
                 }
             }
             .addOnFailureListener { e ->
-                addDataButton.isEnabled = true
-                addDataButton.text = "Add Data"
                 Toast.makeText(this, "Error checking existing data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
@@ -476,6 +473,10 @@ class MainActivity : AppCompatActivity() {
             "tr" to "T", // Initialize with default T/R value
             "timestamp" to System.currentTimeMillis()
         )
+
+        // Disable button to prevent multiple clicks
+        addDataButton.isEnabled = false
+        addDataButton.text = "Saving..."
 
         FirebaseFirestore.getInstance()
             .collection("counter_data")
@@ -504,6 +505,10 @@ class MainActivity : AppCompatActivity() {
             "c4" to newC4,
             "timestamp" to System.currentTimeMillis()
         )
+
+        // Disable button to prevent multiple clicks
+        addDataButton.isEnabled = false
+        addDataButton.text = "Updating..."
 
         FirebaseFirestore.getInstance()
             .collection("counter_data")
@@ -542,4 +547,48 @@ class MainActivity : AppCompatActivity() {
         // Update totals
         updateTotals()
     }
+
+    private fun showPopupMenu(view: View) {
+        val popup = PopupMenu(this, view)
+        popup.menuInflater.inflate(R.menu.menu_popup, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_enter -> {
+                    //Do Nothing
+                    true
+                }
+                R.id.menu_data -> {
+                    startActivity(Intent(this, DataActivity::class.java))
+                    true
+                }
+                R.id.menu_summary -> {
+                    startActivity(Intent(this, PrintActivity::class.java))
+                    true
+                }
+                R.id.menu_logout -> {
+                    showLogoutDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popup.show()
+    }
+
+    // Make sure you have this method in your MainActivity:
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("Logout") { _, _ ->
+                auth.signOut()
+                startActivity(Intent(this, AuthActivity::class.java))
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
 }

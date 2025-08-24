@@ -8,16 +8,19 @@
     android:orientation="vertical"
     android:layout_marginBottom="440dp"
     android:background="@color/blueDark"
+    android:padding="8dp"
     tools:context=".MainActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar">
+        android:id="@+id/toolbar"
+        android:layout_marginTop="45dp">
 
         <ImageView
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/paldo_logo3"
+            android:src="@drawable/paldoapp_logo"
+            android:layout_marginStart="30dp"
             android:layout_centerVertical="true"/>
 
         <TextView
@@ -35,6 +38,7 @@
             android:src="@drawable/icon_menu"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
             android:id="@+id/option_btn"/>
 
     </RelativeLayout>

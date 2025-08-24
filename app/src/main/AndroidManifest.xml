@@ -3,19 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Add the following permissions for Excel export -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/paldo_logo3"
+        android:icon="@drawable/paldoapp_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/paldo_logo3"
+        android:roundIcon="@drawable/paldoapp_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PaldoApp">
+        android:theme="@style/Theme.PaldoApp"
+        android:requestLegacyExternalStorage="true">
 
         <activity
-            android:name=".AuthActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +29,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".AuthActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

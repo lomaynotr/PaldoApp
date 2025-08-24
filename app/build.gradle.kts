@@ -64,4 +64,7 @@ dependencies {
     implementation(platform(libs.firebase.bom)) // You should already have this
     implementation(libs.firebase.auth.ktx)      // Add this line for Firebase Authentication (Kotlin extensions)
     implementation(libs.firebase.firestore)
+    // Excel export support
+    implementation("net.sourceforge.jexcelapi:jxl:2.6.12")
+
 }
