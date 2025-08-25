@@ -146,9 +146,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    // ================================
     // DATE PICKER
-    // ================================
 
     private fun createDatePicker() {
         selectedDateTextView = TextView(this).apply {
@@ -211,9 +209,8 @@ class MainActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    // ================================
+
     // TABLE CREATION
-    // ================================
 
     private fun createTable() {
         createHeaderRow()
@@ -302,9 +299,7 @@ class MainActivity : AppCompatActivity() {
         binding.tableLayout.addView(totalRow)
     }
 
-    // ================================
     // UI ELEMENT CREATORS
-    // ================================
 
     private fun createHeaderTextView(text: String): TextView {
         return TextView(this).apply {
@@ -398,9 +393,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ================================
     // FIRESTORE OPERATIONS
-    // ================================
 
     private fun addDataToFirestore() {
         val currentUser = auth.currentUser
