@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/blueDark"
     tools:context=".SplashActivity">
-    <!-- Or set a background drawable -->
-
     <ImageView
         android:id="@+id/splash_logo"
         android:layout_width="343dp"
@@ -26,6 +24,5 @@
         app:layout_constraintBottom_toBottomOf="@id/splash_logo"
         />
 
-    <!-- Replace with your app logo -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

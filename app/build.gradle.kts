@@ -61,10 +61,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation(platform(libs.firebase.bom)) // You should already have this
-    implementation(libs.firebase.auth.ktx)      // Add this line for Firebase Authentication (Kotlin extensions)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore)
-    // Excel export support
     implementation("net.sourceforge.jexcelapi:jxl:2.6.12")
 
 }

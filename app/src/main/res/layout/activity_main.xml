@@ -43,8 +43,6 @@
 
     </RelativeLayout>
 
-
-
     <!-- Date Picker Container -->
     <LinearLayout
         android:id="@+id/date_container"

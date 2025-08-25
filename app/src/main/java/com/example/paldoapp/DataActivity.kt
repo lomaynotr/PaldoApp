@@ -34,7 +34,7 @@ data class CounterData(
     val hours: String = "",
     val tr: String = "T",
     val timestamp: Long = 0L,
-    val documentId: String = "" // Add document ID to track records
+    val documentId: String = ""
 )
 
 class DataActivity : AppCompatActivity() {
@@ -644,7 +644,7 @@ class DataActivity : AppCompatActivity() {
     }
 
 
-// And add this method to your DataActivity class:
+
 
     private fun showPopupMenu(view: View) {
         val popup = PopupMenu(this, view)

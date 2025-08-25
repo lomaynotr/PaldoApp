@@ -36,12 +36,12 @@ data class PrintData(
     val c2: Double = 0.0,
     val c3: Double = 0.0,
     val c4: Double = 0.0,
-    val kiloFt: Double = 0.0, // New field for Kilo(ft) - total amount from DataActivity
+    val kiloFt: Double = 0.0,
     val hours: String = "",
-    val hoursFt: Double = 0.0, // New field for Hours(ft) - hours * 1235
+    val hoursFt: Double = 0.0,
     val tr: String = "",
     val amount: Double = 0.0,
-    val documentId: String = "" // For Firestore reference
+    val documentId: String = ""
 )
 
 class PrintActivity : AppCompatActivity() {
